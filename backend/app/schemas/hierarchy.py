@@ -105,36 +105,26 @@ class TerritoryResponse(TerritoryBase):
         from_attributes = True
 
 
-# Plot Schemas
+# Plot Schemas - упрощенная версия для прототипа
 class PlotBase(BaseModel):
+    x: int = Field(..., ge=-50, le=50)
+    y: int = Field(..., ge=-50, le=50)
     name: Optional[str] = Field(None, max_length=100)
-    description: Optional[str] = None
-    plot_type: str = "residential"
-    area: float = Field(default=10.0, ge=1.0)
-    coordinates: Optional[Dict[str, Any]] = None
-    max_objects: int = Field(default=20, ge=1)
 
 
 class PlotCreate(PlotBase):
-    territory_id: int
+    pass
 
 
 class PlotUpdate(BaseModel):
     name: Optional[str] = Field(None, max_length=100)
     description: Optional[str] = None
-    plot_type: Optional[str] = None
-    area: Optional[float] = Field(None, ge=1.0)
-    coordinates: Optional[Dict[str, Any]] = None
-    max_objects: Optional[int] = Field(None, ge=1)
 
 
 class PlotResponse(PlotBase):
     id: int
-    territory_id: int
-    owner_id: int
-    is_active: bool
+    owner_id: Optional[int] = None
     created_at: datetime
-    updated_at: datetime
     
     class Config:
         from_attributes = True

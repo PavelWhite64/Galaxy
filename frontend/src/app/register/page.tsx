@@ -18,12 +18,12 @@ export default function RegisterPage() {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('Пароли не совпадают');
       return;
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters');
+      setError('Пароль должен быть не менее 8 символов');
       return;
     }
 
@@ -41,7 +41,9 @@ export default function RegisterPage() {
 
       router.push('/login');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Registration failed');
+      console.error('Registration error:', err);
+      const errorMsg = err.response?.data?.detail || err.message || 'Ошибка регистрации';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -51,7 +53,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-8">
         <h1 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-          Register
+          Регистрация
         </h1>
 
         {error && (
@@ -63,7 +65,7 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
-              Username
+              Имя пользователя
             </label>
             <input
               id="username"
@@ -71,7 +73,7 @@ export default function RegisterPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 text-white"
-              placeholder="Choose a username"
+              placeholder="Выберите имя пользователя"
               required
               minLength={3}
             />
@@ -87,14 +89,14 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 text-white"
-              placeholder="Enter your email"
+              placeholder="Введите ваш email"
               required
             />
           </div>
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-              Password
+              Пароль
             </label>
             <input
               id="password"
@@ -102,7 +104,7 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 text-white"
-              placeholder="Choose a password"
+              placeholder="Придумайте пароль"
               required
               minLength={8}
             />
@@ -110,7 +112,7 @@ export default function RegisterPage() {
 
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
-              Confirm Password
+              Подтвердите пароль
             </label>
             <input
               id="confirmPassword"
@@ -118,7 +120,7 @@ export default function RegisterPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 text-white"
-              placeholder="Confirm your password"
+              placeholder="Подтвердите ваш пароль"
               required
             />
           </div>
@@ -128,20 +130,20 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed rounded-lg font-semibold transition"
           >
-            {loading ? 'Creating account...' : 'Register'}
+            {loading ? 'Создание аккаунта...' : 'Зарегистрироваться'}
           </button>
         </form>
 
         <p className="mt-6 text-center text-gray-400 text-sm">
-          Already have an account?{' '}
+          Уже есть аккаунт?{' '}
           <a href="/login" className="text-blue-500 hover:text-blue-400">
-            Login
+            Войти
           </a>
         </p>
 
         <p className="mt-4 text-center">
           <a href="/" className="text-gray-500 hover:text-gray-400 text-sm">
-            ← Back to home
+            ← На главную
           </a>
         </p>
       </div>
