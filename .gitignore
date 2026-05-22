@@ -21,21 +21,21 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
-.venv/
-venv/
-env/
-
-# Environment variables
+# Environment
 .env
 .env.local
-.env.*
+*.env.*
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# Docker
+Dockerfile
+docker-compose.yml
+
+# Frontend
+node_modules/
+.next/
+out/
+coverage/
+.nyc_output/
 
 # Logs
 *.log
@@ -43,4 +43,11 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
 ```
