@@ -7,6 +7,10 @@ from sqlalchemy.orm import Session
 from .config import settings
 from .database import engine, Base, get_db
 
+# Import routers
+from app.api.auth import router as auth_router
+from app.api.plots import router as plots_router
+
 app = FastAPI(
     title=settings.APP_NAME,
     description="Virtual Social World Platform API",
@@ -22,28 +26,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include routers
+app.include_router(auth_router)
+app.include_router(plots_router)
+
 
 @app.get("/")
 async def root():
     """Root endpoint."""
     return {
-        "message": "Welcome to Virtual Social World API",
+        "message": "Добро пожаловать в API Виртуального Социального Мира",
         "docs": "/docs",
         "redoc": "/redoc"
     }
 
 
 @app.get("/health")
-async def health_check():
-    """Health check endpoint."""
-    return {"status": "healthy"}
+async def health_check(db: Session = Depends(get_db)):
+    """Health check endpoint with DB connection test."""
+    try:
+        db.execute("SELECT 1")
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        return {"status": "unhealthy", "database": "disconnected", "error": str(e)}
 
 
-# Import models lazily to avoid DB connection on startup
-# from .models import User, Wallet  # Import models to ensure they're registered
-
-# Create tables (will be done via Alembic migrations in production)
-# Base.metadata.create_all(bind=engine)
+# Create tables for development (use Alembic in production)
+Base.metadata.create_all(bind=engine)
 
 
 if __name__ == "__main__":
